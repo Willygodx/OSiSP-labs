@@ -42,6 +42,7 @@ int main(int argc, char *argv[])
     printf("Directory: %s\n", directory);
 
     recursiveRead(directory, &flags, &array);
+
     if(flags.SORT_FLAG)
         qsort(array.data, array.size, sizeof(char *), comparator);
 
