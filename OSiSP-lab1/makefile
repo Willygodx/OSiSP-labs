@@ -1,6 +1,6 @@
 CC = gcc
 
-CFLAGS = -c -W -Wall -Wextra
+CFLAGS =  -std=c11 -pedantic -c -W -Wall -Wextra
 
 .PHONY: all
 all: start
