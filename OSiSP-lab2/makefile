@@ -1,18 +1,13 @@
 CC = gcc
+CFLAGS = -W -Wall -Wno-unused-parameter -Wno-unused-variable -std=c11 -pedantic
 
-CFLAGS =  -W -Wall -Wno-unused-parameter -Wno-unused-variable -std=c11 -pedantic
+all: parent child
 
-.PHONY: all
-all: start
+parent: parent.c
+	$(CC) $(CFLAGS) parent.c -o parent
 
-start:	child.o parent.o
-	$(CC) $^ -o parent	
+child: child.c
+	$(CC) $(CFLAGS) child.c -o child
 
-parent.o: src/parent.c
-	$(CC) $(CFLAGS) $<
-
-child.o: src/child.c
-	$(CC) $(CFLAGS) $< 
-	
 clean:
-	rm -rf *.o dirwalks
+	rm -f parent child
