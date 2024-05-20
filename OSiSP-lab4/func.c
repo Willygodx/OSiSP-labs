@@ -1,13 +1,14 @@
 #include "func.h"
 
+// Функция для заполнения сообщений в разделяемой памяти.
 void fillMessages() {
-    int shmFd = shm_open(SHARED_MEMORY_NAME, O_RDWR, 0666);     // Открыть совместно используемую память.
+    int shmFd = shm_open(SHARED_MEMORY_NAME, O_RDWR, 0666);     // Открытие совместно используемой памяти
     if(shmFd == -1) {
         printf("Error while opening shared memory.\n");
         exit(EXIT_FAILURE);
     }
 
-    // Отобразить её.
+    // Отображение совместно используемой памяти.
     Queue* queue = mmap(NULL, sizeof(Queue) + MAX_MESSAGE_COUNT * sizeof(Node) + MAX_MESSAGE_COUNT * sizeof(Message), PROT_READ | PROT_WRITE, MAP_SHARED, shmFd, 0);
     if(queue == MAP_FAILED) {
         printf("Error while mapping shared memory.\n");
@@ -53,6 +54,7 @@ void fillMessages() {
     sem_close(fillSem);
 }
 
+// Функция для извлечения сообщений из разделяемой памяти.
 void extractMessages() {
     int shmFd = shm_open(SHARED_MEMORY_NAME, O_RDWR, 0666);     // Открыть совместо используемую память.
     if(shmFd == -1) {
@@ -106,6 +108,7 @@ void extractMessages() {
     sem_close(extractSem);
 }
 
+// Функция для изменения статуса переменной continuing.
 void changeContinuingStatus() {
-    continuing ^= 1;
+    continuing ^= 1; // Переключение переменной continuing между значениями истинности и ложности.
 }

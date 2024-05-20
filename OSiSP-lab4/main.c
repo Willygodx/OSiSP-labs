@@ -2,8 +2,8 @@
 
 int continuing = 1;
 
-StackNode* stackFiller = NULL;             // Процессы добавления.
-StackNode* stackExtractor = NULL;          // Процессы удаления.
+StackNode* stackFiller = NULL;
+StackNode* stackExtractor = NULL;
 
 int main() {
     srand(time(NULL));
@@ -59,6 +59,7 @@ int main() {
         char ch = getchar();
         switch (ch) {
             case 'w': {
+                // Создание нового процесса-заполнителя.
                 pid_t pid = fork();
                 if(pid == -1) {
                     printf("Error occurred while creating new filler, error code %d.\n", errno);
@@ -71,6 +72,7 @@ int main() {
                 break;
             }
             case 's':
+                // Отправка сигнала SIGUSR1 процессу-заполнителю для прекращения его работы.
                 if(stackFiller != NULL) {
                     kill(stackFiller->pid, SIGUSR1);
                     waitpid(stackFiller->pid, NULL, 0);
@@ -79,6 +81,7 @@ int main() {
                     printf("There are no fillers.\n");
                 break;
             case 'e': {
+                // Создание нового процесса-извлекателя.
                 pid_t pid = fork();
                 if(pid == -1) {
                     printf("Error occurred while creating new extractor, error code %d.\n", errno);
@@ -91,6 +94,7 @@ int main() {
                 break;
             }
             case 'd':
+                // Отправка сигнала SIGUSR1 процессу-извлекателю для прекращения его работы.
                 if(stackExtractor != NULL) {
                     kill(stackExtractor->pid, SIGUSR1);
                     waitpid(stackExtractor->pid, NULL, 0);
@@ -99,6 +103,7 @@ int main() {
                     printf("There are no extractors.\n");
                 break;
             case 'q':
+                // Прекращение работы всех заполнителей и извлекателей.
                 while(stackFiller != NULL) {
                     kill(stackFiller->pid, SIGUSR1);
                     waitpid(stackFiller->pid, NULL, 0);

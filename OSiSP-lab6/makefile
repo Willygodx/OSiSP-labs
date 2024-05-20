@@ -1,0 +1,32 @@
+CC=gcc
+CFLAGS=-W -Wall -Wno-unused-parameter -Wno-unused-variable -std=c11 -pedantic -pthread
+
+MAIN_SRCS=sort.c func.c pthread_barrier.c
+BINREADER_SRCS=reader.c
+GENERATOR_SRCS=generator.c
+
+MAIN_OBJS=$(MAIN_SRCS:.c=.o)
+BINREADER_OBJS=$(BINREADER_SRCS:.c=.o)
+GENERATOR_OBJS=$(GENERATOR_SRCS:.c=.o)
+
+MAIN_TARGET=sort
+BINREADER_TARGET=reader
+GENERATOR_TARGET=generator
+
+all: $(MAIN_TARGET) $(BINREADER_TARGET) $(GENERATOR_TARGET)
+
+$(MAIN_TARGET): $(MAIN_OBJS)
+	$(CC) $(CFLAGS) $(MAIN_OBJS) -o $(MAIN_TARGET)
+
+$(BINREADER_TARGET): $(BINREADER_OBJS)
+	$(CC) $(CFLAGS) $(BINREADER_OBJS) -o $(BINREADER_TARGET)
+
+$(GENERATOR_TARGET): $(GENERATOR_OBJS)
+	$(CC) $(CFLAGS) $(GENERATOR_OBJS) -o $(GENERATOR_TARGET)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+.PHONY: clean
+clean:
+	rm -f $(MAIN_OBJS) $(BINREADER_OBJS) $(GENERATOR_OBJS) $(MAIN_TARGET) $(BINREADER_TARGET) $(GENERATOR_TARGET)
