@@ -2,9 +2,9 @@
 
 void *open_memory(void* data) {
     printf("Opening data start.\n");
-    create_data* cData = (create_data*)data;
+    create_data* created_data = (create_data*)data;
 
-    FILE* f = fopen(cData->file_name, "rb+");
+    FILE* f = fopen(created_data->file_name, "rb+");
     if(f==NULL){
         printf("Error while open file.\n");
         return 0;
@@ -25,10 +25,10 @@ void *open_memory(void* data) {
 
     current = (index_record *)buf;
     printf("Creating threads.\n");
-    pthread_t threadsId[cData->threads-1];
-    for(int i = 1; i<cData->threads; i++) {
+    pthread_t threadsId[created_data->threads - 1];
+    for(int i = 1; i < created_data->threads; i++) {
         thread_args* args = (thread_args*)malloc(sizeof(thread_args));
-        args->block_size = cData->block_size;
+        args->block_size = created_data->block_size;
         args->thread_number = i;
         args->buf = (index_record*)buf;
 
@@ -38,12 +38,12 @@ void *open_memory(void* data) {
         }
     }
     thread_args* args = (thread_args*)malloc(sizeof(thread_args));
-    args->block_size = cData->block_size;
+    args->block_size = created_data->block_size;
     args->thread_number = 0;
     args->buf = (index_record*)buf;
     block_sorting(args);
 
-    for(int i = 1; i<cData->threads; i++)
+    for(int i = 1; i < created_data->threads; i++)
         pthread_join(threadsId[i-1], NULL);
     printf("End of threads.\n");
 
@@ -72,22 +72,22 @@ void* block_sorting(void* thread_a) {
         }
     }
     printf("Merging in %d thread.\n", args->thread_number);
-    int mergeStep = 2;
+    int merge_step = 2;
 
-    while(mergeStep<=blocks) {
+    while(merge_step <= blocks) {
         pthread_barrier_wait(&barrier);
         current = args->buf;
         while (current < args->buf + size) {
             pthread_mutex_lock(&mutex);
             if(current < args->buf + size) {
                 index_record *temp = current;
-                current += mergeStep * args->block_size;
+                current += merge_step * args->block_size;
                 pthread_mutex_unlock(&mutex);
-                int bufSize = (mergeStep / 2) * args->block_size;
+                int bufSize = (merge_step / 2) * args->block_size;
                 index_record *left = (index_record *) malloc(bufSize * sizeof(index_record));
-                memcpy(left, temp, (mergeStep / 2) * args->block_size * sizeof(index_record));
+                memcpy(left, temp, (merge_step / 2) * args->block_size * sizeof(index_record));
                 index_record *right = (index_record *) malloc(bufSize * sizeof(index_record));
-                memcpy(right, temp + (mergeStep / 2) * args->block_size, (mergeStep / 2) * args->block_size * sizeof(index_record));
+                memcpy(right, temp + (merge_step / 2) * args->block_size, (merge_step / 2) * args->block_size * sizeof(index_record));
 
                 int i = 0, j = 0;
                 while (i < bufSize && j < bufSize) {
@@ -120,7 +120,7 @@ void* block_sorting(void* thread_a) {
                 break;
             }
         }
-        mergeStep*=2;
+        merge_step*=2;
     }
     pthread_mutex_unlock(&mutex);
     pthread_barrier_wait(&barrier);
