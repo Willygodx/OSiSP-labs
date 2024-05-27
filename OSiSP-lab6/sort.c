@@ -18,7 +18,7 @@ void initialize(int argc, char *argv[]) {
             printf("Wrong size, it should be multiple 4096.\n");
             exit(0);
         }
-        if (threads < 8 || threads > 8000) {
+        if (threads < 4 || threads > 8000) {
             printf("Wrong count of threads, from 8 to 8000.\n");
             exit(0);
         }
