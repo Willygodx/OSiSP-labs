@@ -1,0 +1,32 @@
+CC=gcc
+CFLAGS=-W -Wall -Wno-unused-parameter -Wno-unused-variable -std=c11 -pedantic
+
+WORKDATA_SRCS=workData.c dataOperations.c
+MAIN_SRCS=main.c mainFunctions.c stack.c ring.c
+MAKEDATA_SRCS=makeData.c
+
+WORKDATA_OBJS=$(WORKDATA_SRCS:.c=.o)
+MAIN_OBJS=$(MAIN_SRCS:.c=.o)
+MAKEDATA_OBJS=$(MAKEDATA_SRCS:.c=.o)
+
+WORKDATA_TARGET=workData
+MAIN_TARGET=main
+MAKEDATA_TARGET=makeData
+
+all: $(WORKDATA_TARGET) $(MAIN_TARGET) $(MAKEDATA_TARGET)
+
+$(WORKDATA_TARGET): $(WORKDATA_OBJS)
+	$(CC) $(CFLAGS) $(WORKDATA_OBJS) -o $(WORKDATA_TARGET)
+
+$(MAIN_TARGET): $(MAIN_OBJS)
+	$(CC) $(CFLAGS) $(MAIN_OBJS) -o $(MAIN_TARGET)
+
+$(MAKEDATA_TARGET): $(MAKEDATA_OBJS)
+	$(CC) $(CFLAGS) $(MAKEDATA_OBJS) -o $(MAKEDATA_TARGET)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+.PHONY: clean
+clean:
+	rm -f $(WORKDATA_OBJS) $(WORKDATA_TARGET) $(MAIN_OBJS) $(MAIN_TARGET) $(MAKEDATA_OBJS) $(MAKEDATA_TARGET)
