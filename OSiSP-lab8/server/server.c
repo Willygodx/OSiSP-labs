@@ -14,7 +14,6 @@ bool is_new_dir = false;
 
 int main(int argc, char *argv[]) {
     if (argc != 4) {
-        fprintf(stderr, "Incorrect arguments!\n", argv[0]);
         exit(EXIT_FAILURE);
     }
 
