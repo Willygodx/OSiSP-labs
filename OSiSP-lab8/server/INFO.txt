@@ -1,2 +1,0 @@
-Welcome to the server!
-List of commands [INFO, ECHO, CD, LIST, QUIT].
