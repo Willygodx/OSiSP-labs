@@ -190,7 +190,7 @@ void list(int client_socket, char *current_dir)
 
                     if (lstat(link_target, &(struct stat){0}) == 0 && S_ISLNK(((struct stat){0}).st_mode))
                         snprintf(link_info, sizeof(link_info), "%s -->> %s", entry->d_name, link_target);
-                    else 
+                    else
                         snprintf(link_info, sizeof(link_info), "%s --> %s", entry->d_name, link_target);
                     strncat(response, link_info, sizeof(response) - strlen(response) - 1);
                 } 
@@ -301,7 +301,7 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
-    printf("Deployed.\n");
+    printf("READY TO USE.\n");
 
     while (1) 
     {
